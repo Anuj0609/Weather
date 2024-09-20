@@ -47,6 +47,25 @@ type WeatherResponse = {
   cod: number;
 };
 
+const weatherType = [
+  { name: "Clear", image: "/clear-sky.avif" },
+  { name: "Clouds", image: "/few-clouds.jpg" },
+  { name: "Mist", image: "/mist.jpg" },
+  { name: "Rain", image: "/rain.jpg" },
+  { name: "Snow", image: "/snow.jpg" },
+  { name: "Thunderstorm", image: "/thunderstorm.jpg" },
+  { name: "Smoke", image: "/Smoke.jpg" },
+  { name: "Haze", image: "/Haze.jpg" },
+  { name: "Dust", image: "/Dust.jpg" },
+  { name: "Fog", image: "/Fog.jpg" },
+  { name: "Sand", image: "/Sand.jpg" },
+  { name: "Ash", image: "/Ash.jpg" },
+  { name: "Squall", image: "/Squall.jpg" },
+  { name: "Tornado", image: "/Tornado.jpg" },
+  { name: "Ash", image: "/Ash.jpg" },
+];
+
+
 export default function WeatherResult() {
   const API = "42feaff7e7f178aec2c9ec08ddc1de79";
   const router = useRouter();
@@ -55,24 +74,7 @@ export default function WeatherResult() {
   const [reportBackgroundImage, setReportBackgroundImage] =
     useState("/weather-bg.jpg");
 
-  const weatherType = [
-    { name: "Clear", image: "/clear-sky.avif" },
-    { name: "Clouds", image: "/few-clouds.jpg" },
-    { name: "Mist", image: "/mist.jpg" },
-    { name: "Rain", image: "/rain.jpg" },
-    { name: "Snow", image: "/snow.jpg" },
-    { name: "Thunderstorm", image: "/thunderstorm.jpg" },
-    { name: "Smoke", image: "/Smoke.jpg" },
-    { name: "Haze", image: "/Haze.jpg" },
-    { name: "Dust", image: "/Dust.jpg" },
-    { name: "Fog", image: "/Fog.jpg" },
-    { name: "Sand", image: "/Sand.jpg" },
-    { name: "Ash", image: "/Ash.jpg" },
-    { name: "Squall", image: "/Squall.jpg" },
-    { name: "Tornado", image: "/Tornado.jpg" },
-    { name: "Ash", image: "/Ash.jpg" },
-  ];
-
+  
   useEffect(() => {
     if (!lat || !lon) return;
 
