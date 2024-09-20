@@ -10,6 +10,26 @@ export default function WeatherResult() {
   const [weather, setWeather] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [reportBackgroundImage, setReportBackgroundImage] =
+    useState("/weather-bg.jpg");
+
+  const weatherType = [
+    { name: "Clear", image: "/clear-sky.avif" },
+    { name: "Clouds", image: "/few-clouds.jpg" },
+    { name: "Mist", image: "/mist.jpg" },
+    { name: "Rain", image: "/rain.jpg" },
+    { name: "Snow", image: "/snow.jpg" },
+    { name: "Thunderstorm", image: "/thunderstorm.jpg" },
+    { name: "Smoke", image: "/Smoke.jpg" },
+    { name: "Haze", image: "/Haze.jpg" },
+    { name: "Dust", image: "/Dust.jpg" },
+    { name: "Fog", image: "/Fog.jpg" },
+    { name: "Sand", image: "/Sand.jpg" },
+    { name: "Ash", image: "/Ash.jpg" },
+    { name: "Squall", image: "/Squall.jpg" },
+    { name: "Tornado", image: "/Tornado.jpg" },
+    { name: "Ash", image: "/Ash.jpg" },
+  ];
 
   useEffect(() => {
     if (!lat || !lon) return;
@@ -21,6 +41,17 @@ export default function WeatherResult() {
         const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API}&units=metric`;
         const result = await axios.get(url);
         setWeather(result.data);
+
+        const currentWeather = result.data.weather[0]?.main; 
+        const matchedWeather = weatherType.find(
+          (type) => type.name.toLowerCase() === currentWeather.toLowerCase()
+        );
+
+        if (matchedWeather) {
+          setReportBackgroundImage(matchedWeather.image);
+        } else {
+          setReportBackgroundImage("/weather-bg.jpg");
+        }
       } catch (err) {
         setError("Error fetching weather data.");
       } finally {
@@ -37,7 +68,10 @@ export default function WeatherResult() {
     month: "long",
     day: "numeric",
     year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
+
 
   const handleChangeLocation = () => {
     router.push("/");
@@ -49,21 +83,23 @@ export default function WeatherResult() {
         className="absolute inset-0 bg-cover bg-center filter blur-sm"
         style={{ backgroundImage: 'url("/weather-bg.jpg")' }}
       ></div>
+
       <div className="relative z-10 flex justify-center items-center w-full h-full">
         <div className="relative w-96 h-[450px] z-30">
           <img
-            src="/report-bg.jpg"
+            src={reportBackgroundImage}
             className="w-full h-full rounded-2xl shadow-lg object-cover"
             alt="Background"
           />
           <div>
-            <div className="absolute inset-0 flex flex-col justify-between m-6 text-black text-xl font-medium">
+            <div className="absolute inset-0 flex flex-col justify-between m-6 text-black text-lg font-sans">
               <div>
-                <div className="text-3xl">{dayName}</div>
-                <div>{date}</div>
-                <div className="flex flex-row items-center text-sm">
+                <div className="text-4xl font-bold">{dayName}</div>
+                <div className="text-xl font-bold">{date}</div>
+                <div className="flex flex-row items-center text-base">
                   <CiLocationOn />
                   {locationName || "Location"}
+                  <div className="ml-2">({weather?.name})</div>
                 </div>
               </div>
               {weather && (
@@ -72,30 +108,34 @@ export default function WeatherResult() {
                     src={`https://openweathermap.org/img/wn/${weather.weather[0]?.icon}@2x.png`}
                     alt="weather-icon"
                   />
-                  <div>{weather.weather[0]?.description.toUpperCase()}</div>
-                  <div>{weather.main.temp}°C</div>
+                  <div className="text-xl">
+                    {weather.weather[0]?.description.toUpperCase()}
+                  </div>
+                  <div className="text-3xl">{weather.main.temp}°C</div>
                 </div>
               )}
             </div>
           </div>
         </div>
 
-        <div className="bg-[#222831] bg-opacity-80 w-96 h-[400px] rounded-lg -ml-2 z-10 flex justify-center flex-col shadow-lg">
-          <div className="flex flex-row justify-between text-lg font-semibold items-center mx-10 px-10 my-1">
-            <div>RAIN</div>
-            <div>{weather?.rain ? "YES" : "NO"}</div>
+        <div className="bg-[#222831] bg-opacity-50 w-96 h-[400px] rounded-lg -ml-2 z-10 flex justify-center flex-col shadow-lg">
+          <div className="flex flex-row justify-between text-lg font-normal items-center mx-10 px-10 my-1 text-white">
+            <div>FEELS LIKE</div>
+            <div className="font-light">{weather?.main?.feels_like}°C</div>
           </div>
-          <div className="flex flex-row justify-between text-lg font-semibold items-center mx-10 px-10 my-1">
+          <div className="flex flex-row justify-between text-lg font-normal items-center mx-10 px-10 my-1 text-white">
             <div>HUMIDITY</div>
-            <div>{weather?.main.humidity || "N/A"}%</div>
+            <div className="font-light">{weather?.main.humidity || "N/A"}%</div>
           </div>
-          <div className="flex flex-row justify-between text-lg font-semibold items-center mx-10 px-10 my-1">
+          <div className="flex flex-row justify-between text-lg font-normal items-center mx-10 px-10 my-1 text-white">
             <div>WIND</div>
-            <div>{weather?.wind.speed || "N/A"} km/h</div>
+            <div className="font-light">
+              {weather?.wind.speed || "N/A"} km/h
+            </div>
           </div>
           <button
             onClick={handleChangeLocation}
-            className="flex items-center justify-center mt-10 text-black bg-[#EECEB9] px-4 py-1 rounded-lg hover:bg-[#D4B29C] m-14 mb-4 font-bold"
+            className="flex items-center justify-center mt-10 text-black bg-[#EECEB9] px-4 py-1 rounded-lg hover:bg-[#D4B29C] m-14 mb-4 font-semibold"
           >
             <CiLocationOn className="mr-2" />
             Change Location
