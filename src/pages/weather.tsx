@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { CiLocationOn } from "react-icons/ci";
-import Image from "next/image";
 
 type WeatherResponse = {
   coord: {
@@ -124,12 +123,10 @@ export default function WeatherResult() {
 
       <div className="relative z-10 flex justify-center items-center w-full h-full">
         <div className="relative w-96 h-[450px] z-30">
-          <Image
+          <img
             src={reportBackgroundImage}
             className="w-full h-full rounded-2xl shadow-lg object-cover"
             alt="Background"
-            width={96}
-            height={450}
           />
           <div>
             <div className="absolute inset-0 flex flex-col justify-between m-6 text-black text-lg font-sans">
