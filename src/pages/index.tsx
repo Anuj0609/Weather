@@ -2,11 +2,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 
+type LocationData = {
+  name: string;
+  local_names: {
+    [key: string]: string;
+  };
+  lat: number;
+  lon: number;
+  country: string;
+  state: string;
+};
+
 export default function Home() {
   const API = "42feaff7e7f178aec2c9ec08ddc1de79";
   const [inputSearch, setInputSearch] = useState("");
-  const [locationResult, setLocationResult] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [locationResult, setLocationResult] = useState<LocationData[]>([]);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [debouncedSearch, setDeboucedSearch] = useState(inputSearch);
@@ -27,27 +37,25 @@ export default function Home() {
     }
     getYourLocation(inputSearch);
   }, [inputSearch]);
-  const getYourLocation = async (searchQuery: string) => {
-    setLoading(true);
+
+  const getYourLocation = async (inputSearch: string) => {
     setError(null);
     try {
       const url = `http://api.openweathermap.org/geo/1.0/direct?q=${inputSearch}&limit=5&appid=${API}`;
       const result = await axios.get(url);
 
-      setLocationResult(result.data.slice(0, 5));
+      setLocationResult(result.data);
     } catch (err) {
       setError("Error fetching location data.");
-    } finally {
-      setLoading(false);
     }
   };
   useEffect(() => {
-    if (debouncedSearch.length>2) {
+    if (debouncedSearch.length > 2) {
       getYourLocation(debouncedSearch);
     }
   }, [debouncedSearch]);
 
-  const handleLocationClick = (location: any) => {
+  const handleLocationClick = (location: LocationData) => {
     const { lat, lon, name, state, country } = location;
     const locationName = `${name} - ${state} - ${country}`;
     router.push({

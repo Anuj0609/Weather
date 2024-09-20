@@ -2,14 +2,57 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { CiLocationOn } from "react-icons/ci";
+import Image from "next/image";
+
+type WeatherResponse = {
+  coord: {
+    lon: number;
+    lat: number;
+  };
+  weather: {
+    id: number;
+    main: string;
+    description: string;
+    icon: string;
+  }[];
+  base: string;
+  main: {
+    temp: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
+    humidity: number;
+    sea_level: number;
+    grnd_level: number;
+  };
+  visibility: number;
+  wind: {
+    speed: number;
+    deg: number;
+  };
+  clouds: {
+    all: number;
+  };
+  dt: number;
+  sys: {
+    type: number;
+    id: number;
+    country: string;
+    sunrise: number;
+    sunset: number;
+  };
+  timezone: number;
+  id: number;
+  name: string;
+  cod: number;
+};
 
 export default function WeatherResult() {
   const API = "42feaff7e7f178aec2c9ec08ddc1de79";
   const router = useRouter();
   const { lat, lon, name: locationName } = router.query;
-  const [weather, setWeather] = useState<any | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [weather, setWeather] = useState<WeatherResponse>();
   const [reportBackgroundImage, setReportBackgroundImage] =
     useState("/weather-bg.jpg");
 
@@ -35,14 +78,12 @@ export default function WeatherResult() {
     if (!lat || !lon) return;
 
     const getWeather = async () => {
-      setLoading(true);
-      setError(null);
       try {
         const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API}&units=metric`;
         const result = await axios.get(url);
         setWeather(result.data);
 
-        const currentWeather = result.data.weather[0]?.main; 
+        const currentWeather = result.data.weather[0]?.main;
         const matchedWeather = weatherType.find(
           (type) => type.name.toLowerCase() === currentWeather.toLowerCase()
         );
@@ -53,9 +94,7 @@ export default function WeatherResult() {
           setReportBackgroundImage("/weather-bg.jpg");
         }
       } catch (err) {
-        setError("Error fetching weather data.");
-      } finally {
-        setLoading(false);
+        console.error("Error fetching weather data.");
       }
     };
 
@@ -72,7 +111,6 @@ export default function WeatherResult() {
     minute: "2-digit",
   });
 
-
   const handleChangeLocation = () => {
     router.push("/");
   };
@@ -86,10 +124,12 @@ export default function WeatherResult() {
 
       <div className="relative z-10 flex justify-center items-center w-full h-full">
         <div className="relative w-96 h-[450px] z-30">
-          <img
+          <Image
             src={reportBackgroundImage}
             className="w-full h-full rounded-2xl shadow-lg object-cover"
             alt="Background"
+            width={96}
+            height={450}
           />
           <div>
             <div className="absolute inset-0 flex flex-col justify-between m-6 text-black text-lg font-sans">
