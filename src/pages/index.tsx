@@ -67,14 +67,14 @@ export default function Home() {
   return (
     <div className="relative h-screen w-screen">
       <div
-        className="absolute inset-0 bg-cover bg-center filter blur-sm"
+        className="absolute inset-0 bg-cover bg-center filter blur-sm bg-gradient-to-b from-blue-400 to-orange-400"
         style={{ backgroundImage: 'url("/weather-bg.jpg")' }}
       ></div>
       <div className="relative z-10 flex items-center justify-center h-full">
         <div className="text-center text-white p-4 font-sans">
-          <div className="mb-8 font-bold text-2xl text-black">
-            Weather Report
-          </div>
+          <h1 className="mb-8 font-semibold text-4xl text-black">
+            Weathercaster
+          </h1>
 
           <div className="mb-4">
             <input
@@ -84,13 +84,6 @@ export default function Home() {
               onChange={(e) => setInputSearch(e.target.value)}
               className="py-2 px-5 text-gray-700 rounded-md text-lg w-96 font-medium"
             />
-            {/* <button
-              onClick={() => {}}
-              disabled={loading}
-              className="p-2 ml-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-lg font-semibold"
-            >
-              {loading ? "Searching..." : "Search"}
-            </button> */}
           </div>
           {error && <div className="text-red-400 font-medium">{error}</div>}
           <div className="flex flex-col space-y-2">
