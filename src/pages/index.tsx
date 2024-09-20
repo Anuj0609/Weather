@@ -41,7 +41,7 @@ export default function Home() {
   const getYourLocation = async (inputSearch: string) => {
     setError(null);
     try {
-      const url = `http://api.openweathermap.org/geo/1.0/direct?q=${inputSearch}&limit=5&appid=${API}`;
+      const url = `https://api.openweathermap.org/geo/1.0/direct?q=${inputSearch}&limit=5&appid=${API}`;
       const result = await axios.get(url);
 
       setLocationResult(result.data);

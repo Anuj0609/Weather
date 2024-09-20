@@ -80,7 +80,7 @@ export default function WeatherResult() {
 
     const getWeather = async () => {
       try {
-        const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API}&units=metric`;
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API}&units=metric`;
         const result = await axios.get(url);
         setWeather(result.data);
 
