@@ -1,4 +1,5 @@
 import { WeatherResponse } from "@/pages/weather";
+import Image from "next/image";
 import React from "react";
 import { CiLocationOn } from "react-icons/ci";
 
@@ -32,7 +33,7 @@ export const LocationDetails = ({
         </div>
         {weather && (
           <div className="text-gray-200 font-bold flex-col align-bottom mb-3">
-            <img
+            <Image
               src={`https://openweathermap.org/img/wn/${weather.weather[0]?.icon}@2x.png`}
               alt="weather-icon"
             />
