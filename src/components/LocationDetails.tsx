@@ -1,3 +1,4 @@
+import { WeatherResponse } from "@/pages/weather";
 import React from "react";
 import { CiLocationOn } from "react-icons/ci";
 
@@ -8,11 +9,11 @@ export const LocationDetails = ({
   reportBackgroundImage,
   locationName,
 }: {
-  weather: any;
-  dayName: any;
-  date: any;
-  reportBackgroundImage: any;
-  locationName: any;
+  weather: WeatherResponse;
+  dayName: string;
+  date: string;
+  reportBackgroundImage: string;
+  locationName: string;
 }) => {
   return (
     <div

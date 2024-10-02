@@ -5,7 +5,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { WeatherDetails } from "../components/WeatherDetails";
 import { LocationDetails } from "@/components/LocationDetails";
 
-type WeatherResponse = {
+export type WeatherResponse = {
   coord: {
     lon: number;
     lat: number;
@@ -116,13 +116,14 @@ export default function WeatherResult() {
     router.push("/");
   };
 
+  if (!weather) return;
   return (
     <>
       <LocationDetails
         weather={weather}
         date={date}
         dayName={dayName}
-        locationName={locationName}
+        locationName={String(locationName)}
         reportBackgroundImage={reportBackgroundImage}
       />
       <div className=" w-full max-w-96 h-[400px] md:-ml-2 -mt-2 md:mt-0 flex flex-col justify-center bg-[#222831] bg-opacity-50 rounded-lg z-10 shadow-lg">
