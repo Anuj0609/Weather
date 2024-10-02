@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { CiLocationOn } from "react-icons/ci";
+import { WeatherDetails } from "../components/WeatherDetails";
+import { LocationDetails } from "@/components/LocationDetails";
 
 type WeatherResponse = {
   coord: {
@@ -65,7 +67,6 @@ const weatherType = [
   { name: "Ash", image: "/Ash.jpg" },
 ];
 
-
 export default function WeatherResult() {
   const API = "42feaff7e7f178aec2c9ec08ddc1de79";
   const router = useRouter();
@@ -74,7 +75,6 @@ export default function WeatherResult() {
   const [reportBackgroundImage, setReportBackgroundImage] =
     useState("/weather-bg.jpg");
 
-  
   useEffect(() => {
     if (!lat || !lon) return;
 
@@ -117,70 +117,36 @@ export default function WeatherResult() {
   };
 
   return (
-    <div className="relative h-screen w-screen">
-      <div
-        className="absolute inset-0 bg-cover bg-center filter blur-sm"
-        style={{ backgroundImage: 'url("/weather-bg.jpg")' }}
-      ></div>
+    <>
+      <LocationDetails
+        weather={weather}
+        date={date}
+        dayName={dayName}
+        locationName={locationName}
+        reportBackgroundImage={reportBackgroundImage}
+      />
+      <div className=" w-full max-w-96 h-[400px] md:-ml-2 -mt-2 md:mt-0 flex flex-col justify-center bg-[#222831] bg-opacity-50 rounded-lg z-10 shadow-lg">
+        <WeatherDetails
+          title={"FEELS LIKE"}
+          value={`${weather?.main?.feels_like}°C`}
+        />
+        <WeatherDetails
+          title={"HUMIDITY"}
+          value={`${weather?.main.humidity || "N/A"}%`}
+        />
+        <WeatherDetails
+          title={"WIND"}
+          value={`${weather?.wind.speed || "N/A"} km/h`}
+        />
 
-      <div className="relative z-10 flex justify-center items-center w-full h-full">
-        <div className="relative w-96 h-[450px] z-30">
-          <img
-            src={reportBackgroundImage}
-            className="w-full h-full rounded-2xl shadow-lg object-cover"
-            alt="Background"
-          />
-          <div>
-            <div className="absolute inset-0 flex flex-col justify-between m-6 text-black text-lg font-sans">
-              <div>
-                <div className="text-4xl font-bold">{dayName}</div>
-                <div className="text-xl font-bold">{date}</div>
-                <div className="flex flex-row items-center text-base">
-                  <CiLocationOn />
-                  {locationName || "Location"}
-                  <div className="ml-2">({weather?.name})</div>
-                </div>
-              </div>
-              {weather && (
-                <div className="text-black font-bold flex-col align-bottom mb-3">
-                  <img
-                    src={`https://openweathermap.org/img/wn/${weather.weather[0]?.icon}@2x.png`}
-                    alt="weather-icon"
-                  />
-                  <div className="text-xl">
-                    {weather.weather[0]?.description.toUpperCase()}
-                  </div>
-                  <div className="text-3xl">{weather.main.temp}°C</div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-[#222831] bg-opacity-50 w-96 h-[400px] rounded-lg -ml-2 z-10 flex justify-center flex-col shadow-lg">
-          <div className="flex flex-row justify-between text-lg font-normal items-center mx-10 px-10 my-1 text-white">
-            <div>FEELS LIKE</div>
-            <div className="font-light">{weather?.main?.feels_like}°C</div>
-          </div>
-          <div className="flex flex-row justify-between text-lg font-normal items-center mx-10 px-10 my-1 text-white">
-            <div>HUMIDITY</div>
-            <div className="font-light">{weather?.main.humidity || "N/A"}%</div>
-          </div>
-          <div className="flex flex-row justify-between text-lg font-normal items-center mx-10 px-10 my-1 text-white">
-            <div>WIND</div>
-            <div className="font-light">
-              {weather?.wind.speed || "N/A"} km/h
-            </div>
-          </div>
-          <button
-            onClick={handleChangeLocation}
-            className="flex items-center justify-center mt-10 text-black bg-[#EECEB9] px-4 py-1 rounded-lg hover:bg-[#D4B29C] m-14 mb-4 font-semibold"
-          >
-            <CiLocationOn className="mr-2" />
-            Change Location
-          </button>
-        </div>
+        <button
+          onClick={handleChangeLocation}
+          className="flex items-center justify-center mt-10 text-black bg-[#EECEB9] px-4 py-1 rounded-lg hover:bg-[#D4B29C] m-14 mb-4 font-semibold"
+        >
+          <CiLocationOn className="mr-2" />
+          Change Location
+        </button>
       </div>
-    </div>
+    </>
   );
 }

@@ -36,14 +36,14 @@ export default function Home() {
   }, [inputSearch]);
 
   const getYourLocation = async (inputSearch: string) => {
-    setError(null); 
+    setError(null);
     try {
       const url = `https://api.openweathermap.org/geo/1.0/direct?q=${inputSearch}&limit=5&appid=${API}`;
       const result = await axios.get(url);
 
       setLocationResult(result.data);
     } catch (err) {
-      setError("Error fetching location data."); 
+      setError("Error fetching location data.");
     }
   };
 
@@ -57,39 +57,31 @@ export default function Home() {
   };
 
   return (
-    <div className="relative h-screen w-screen">
-      <div
-        className="absolute inset-0 bg-cover bg-center filter blur-sm bg-gradient-to-b from-blue-400 to-orange-400"
-        style={{ backgroundImage: 'url("/weather-bg.jpg")' }}
-      ></div>
-      <div className="relative z-10 flex items-center justify-center h-full">
-        <div className="text-center text-white p-4 font-sans">
-          <h1 className="mb-8 font-semibold text-4xl text-black">
-            Weathercaster
-          </h1>
+    <div className="text-center text-white p-4 font-sans w-full">
+      <h1 className="mb-2 md:mb-8 font-semibold text-4xl text-white">
+        Weathercaster!
+      </h1>
 
-          <div className="mb-4">
-            <input
-              type="text"
-              placeholder="Location Search"
-              value={inputSearch}
-              onChange={(e) => setInputSearch(e.target.value)}
-              className="py-2 px-5 text-gray-700 rounded-md text-lg w-96 font-medium"
-            />
-          </div>
-          {error && <div className="text-red-400 font-medium">{error}</div>}
-          <div className="flex flex-col space-y-2">
-            {locationResult.map((location) => (
-              <button
-                key={`${location.lat}-${location.lon}`}
-                onClick={() => handleLocationClick(location)}
-                className="p-2 bg-gray-400 hover:bg-gray-300 text-lg rounded-md font-medium text-black opacity-50"
-              >
-                {location.name} - {location.state} - {location.country}
-              </button>
-            ))}
-          </div>
-        </div>
+      <div className="mb-4 w-full">
+        <input
+          type="text"
+          placeholder="Location Search"
+          value={inputSearch}
+          onChange={(e) => setInputSearch(e.target.value)}
+          className="py-2 px-5 text-gray-600 rounded-md text-lg max-w-96 w-full font-medium"
+        />
+      </div>
+      {error && <div className="text-red-400 font-medium">{error}</div>}
+      <div className="flex flex-col space-y-2">
+        {locationResult.map((location) => (
+          <button
+            key={`${location.lat}-${location.lon}`}
+            onClick={() => handleLocationClick(location)}
+            className="p-2 bg-gray-400 hover:bg-gray-300 text-lg rounded-md font-medium text-black opacity-70"
+          >
+            {location.name} - {location.state} - {location.country}
+          </button>
+        ))}
       </div>
     </div>
   );
