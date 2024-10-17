@@ -32,10 +32,12 @@ export const LocationDetails = ({
           </div>
         </div>
         {weather && (
-          <div className="text-gray-200 font-bold flex-col align-bottom mb-3 ">
+          <div className="text-gray-200 font-bold flex-col align-bottom mb-3">
             <Image
               src={`https://openweathermap.org/img/wn/${weather.weather[0]?.icon}@2x.png`}
               alt="weather-icon"
+              width={100}
+              height={100}
             />
             <div className="text-xl">
               {weather.weather[0]?.description.toUpperCase()}
